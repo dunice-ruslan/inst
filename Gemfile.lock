@@ -171,6 +171,7 @@ GEM
       activesupport (= 3.2.13)
       bundler (~> 1.0)
       railties (= 3.2.13)
+    railsless-deploy (1.1.2)
     railties (3.2.13)
       actionpack (= 3.2.13)
       activesupport (= 3.2.13)
@@ -288,6 +289,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   jquery-rails (= 2.2.1)
   rails (= 3.2.13)
+  railsless-deploy
   rvm-capistrano
   sass-rails (~> 3.2.3)
   spree (= 2.0.3)

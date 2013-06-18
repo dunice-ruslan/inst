@@ -2,22 +2,9 @@ require 'bundler/capistrano'
 require "rvm/capistrano"
 set :application, "inst"
 
-
-
-set :rvm_ruby_string, :local        # use the same ruby as used locally for deployment
-
-before 'deploy', 'rvm:install_rvm'  # update RVM
-before 'deploy', 'rvm:install_ruby'
-
-
-set :rvm_ruby_string, '1.9.3@inst'
-
-set :rvm_ruby_string, :local               # use the same ruby as used locally for deployment
-set :rvm_autolibs_flag, "read-only"        # more info: rvm help autolibs
-
-before 'deploy:setup', 'rvm:install_rvm'   # install RVM
-before 'deploy:setup', 'rvm:install_ruby'  # install Ruby and create gemset, OR:
-before 'deploy:setup', 'rvm:create_gemset' # only create gemset
+set :rvm_ruby_string, "1.9.3"
+set :rake,            "rvm use #{rvm_ruby_string} do bundle exec rake"
+set :bundle_cmd,      "rvm use #{rvm_ruby_string} do bundle"
 
 
 set :repository, "git@github.com:dunice-ruslan/inst.git"
