@@ -4,6 +4,7 @@ gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
+gem 'rvm-capistrano'
 
 gem 'sqlite3'
 
@@ -32,7 +33,7 @@ gem 'jquery-rails', '= 2.2.1'
 # gem 'unicorn'
 
 # Deploy with Capistrano
-# gem 'capistrano'
+gem 'capistrano'
 
 # To use debugger
 # gem 'debugger'
@@ -40,5 +41,3 @@ gem 'jquery-rails', '= 2.2.1'
 gem 'spree', '2.0.3'
 gem 'spree_gateway', :git => 'https://github.com/spree/spree_gateway.git', :branch => '2-0-stable'
 gem 'spree_auth_devise', :git => 'https://github.com/spree/spree_auth_devise.git', :branch => '2-0-stable'
-gem 'capistrano'
-gem 'unicorn'
