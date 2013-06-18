@@ -1,5 +1,8 @@
 require 'bundler/capistrano'
 require "rvm/capistrano"
+set :application, "inst"
+
+
 
 set :rvm_ruby_string, :local        # use the same ruby as used locally for deployment
 
@@ -17,7 +20,6 @@ before 'deploy:setup', 'rvm:install_ruby'  # install Ruby and create gemset, OR:
 before 'deploy:setup', 'rvm:create_gemset' # only create gemset
 
 
-set :application, "inst"
 set :repository, "git@github.com:dunice-ruslan/inst.git"
 set :scm, :git
 set :deploy_server,   "vs02.secoint.ru"
@@ -37,3 +39,14 @@ before 'deploy:finalize_update', 'set_current_release'
 task :set_current_release, :roles => :app do
   set :current_release, latest_release
 end
+
+
+
+
+namespace :rvm do
+  task :trust_rvmrc do
+    run "rvm rvmrc trust #{release_path}"
+  end
+end
+
+after "deploy:setup", "rvm:trust_rvmrc"

@@ -4,7 +4,6 @@ gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-gem 'rvm-capistrano'
 
 gem 'sqlite3'
 
@@ -34,6 +33,7 @@ gem 'jquery-rails', '= 2.2.1'
 
 # Deploy with Capistrano
 gem 'capistrano'
+gem 'rvm-capistrano'
 
 # To use debugger
 # gem 'debugger'
