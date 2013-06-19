@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Instamart::Application.load_tasks
+Inst::Application.load_tasks
