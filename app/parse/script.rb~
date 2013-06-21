@@ -1,0 +1,110 @@
+require 'find'
+require 'roo'
+require 'spreadsheet'
+require 'active_record'
+require 'mysql2'
+
+
+ActiveRecord::Base.establish_connection ({
+  :adapter => "mysql",
+  :host => "localhost",
+  :username => "root",
+  :password => "qq",
+  :database => "spree"})
+  
+class Aaas < ActiveRecord::Base
+end
+
+class FileModel 
+  
+  def initialize ( filePath )
+    puts "parsing :: ", @filePath
+    @filePath = filePath
+    puts "parsing :: " + @filePath
+		@xls = Roo::Spreadsheet.open( @filePath )
+    puts "parsing :: " + @filePath
+
+  end
+  
+  def setCurrentSheet ( new_sheet )
+    return @xls.default_sheet = new_sheet
+  end
+  
+  def getXLS
+    return @xls
+  end
+  
+  def getCurrentAttrNames
+    @objectWithTitles = {}
+    return @objectWithTitles if ( @params['startY'] < 0 )
+
+    rowWithTitles = @xls.row( @params['startY'] )
+    rowWithTitles.each_with_index do |title, index|
+      @objectWithTitles[ index + @params['startX'] ] = canonicalAttrName(title, false)
+    end
+
+    return @objectWithTitles
+  end
+
+  def getCurrentParams
+    @params = {}
+    @params['startX'] = (@xls.first_column.nil?) ? -1 : @xls.first_column
+    @params['startY'] = (@xls.first_row.nil?)    ? -1 : @xls.first_row
+    @params['endX']   = (@xls.last_column.nil?)  ? -1 : @xls.last_column
+    @params['endY']   = (@xls.last_row.nil?)     ? -1 : @xls.last_row
+    return @params
+  end
+  
+  def canonicalAttrName ( xlsName, xls_index )
+    return 'name'        if (['name', 'Dog', 'Bird'].include?( xlsName ) )
+    return 'price'       if (['price', 'Dog', 'Bird'].include?( xlsName ) )
+    return 'description' if (['description', 'Dog', 'Bird'].include?( xlsName ) )
+  end
+  
+  
+  def parseAndSaveRow ( rowIndex )
+    return if ( rowIndex < 0 )
+    rowForParse = @xls.row( rowIndex )
+    product    = Aaas.new
+    rowForParse.each_with_index do |elem, index|
+      attrName = @objectWithTitles[index + @params['startX']]
+      product[attrName] = elem
+    end
+    product.save!
+  end
+
+end
+
+
+class App
+  def initialize
+  	Spreadsheet.client_encoding = 'UTF-8'
+  end
+   
+	def getFiles (path)
+    xlsFiles = []
+    Find.find(path).each do |file|
+      xlsFiles.push file if (file =~ /\b.xls$\b/)
+    end
+    return xlsFiles
+	end
+
+end
+
+app   = App.new
+files = app.getFiles( "current/" )
+puts files[0]
+files && files.each do |filePath|
+	file = FileModel.new ( filePath )
+  xls  = file.getXLS()
+	xls.sheets.each do |sheet|
+		sheet  = file.setCurrentSheet( sheet )
+		params = file.getCurrentParams()
+    titles = file.getCurrentAttrNames()
+    
+    for index in params['startY'] + 1 .. params['endY']
+      file.parseAndSaveRow( index )
+    end
+  end
+end
+
