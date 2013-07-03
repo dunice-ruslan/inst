@@ -1,5 +1,4 @@
 
-
  require 'rubygems'
  require 'iconv'
  require 'roo'
