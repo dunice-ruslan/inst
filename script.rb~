@@ -3,6 +3,7 @@ require 'iconv'
  require 'roo'
  #require 'spreadsheet'
 
+
  HOURLY_RATE = 123.45
 
    oo = Roo::Spreadsheet#.open("1.xls")
