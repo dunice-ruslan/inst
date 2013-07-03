@@ -1,5 +1,5 @@
  require 'rubygems'
-require 'iconv'
+ require 'iconv'
  require 'roo'
  #require 'spreadsheet'
 
